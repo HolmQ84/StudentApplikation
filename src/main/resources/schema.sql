@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS STUDENT;
 
 CREATE TABLE STUDENT
 (
-    sid     LONG          PRIMARY KEY,
-    sname   VARCHAR(25)   NOT NULL,
-    smail   VARCHAR(25)   NOT NULL
+    id     LONG          PRIMARY KEY,
+    name   VARCHAR(25)   NOT NULL,
+    mail   VARCHAR(25)   NOT NULL
 );

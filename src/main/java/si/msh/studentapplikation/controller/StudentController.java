@@ -68,7 +68,7 @@ public class StudentController {
     {
         Student savedStudent = repository.save(student);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(savedStudent.getSid()).toUri();
+                .buildAndExpand(savedStudent.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -78,7 +78,7 @@ public class StudentController {
         Optional<Student> studentOptional = repository.findById(id);
         if (studentOptional.isEmpty())
             return ResponseEntity.notFound().build();
-        student.setSid(id);
+        student.setId(id);
         repository.save(student);
         return ResponseEntity.noContent().build();
     }
@@ -105,7 +105,8 @@ public class StudentController {
 
             GeoIPServiceLocator locator = new GeoIPServiceLocator();
             GeoIPServiceSoap_PortType service = locator.getGeoIPServiceSoap();
-            country = service.getIpLocation(ip);
+            country += (service.getIpLocation(ip)).split("1",2)[0];
+            country += "\n" + service.getCountryNameByISO2(ip);
 
         }
         catch (ServiceException | RemoteException ex)

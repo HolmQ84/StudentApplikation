@@ -13,9 +13,9 @@ public class Student {
     @TableGenerator(name = "Id_Gen", initialValue = 6)
     @Id
     @GeneratedValue(generator = "Id_Gen")
-    private Long sid;
-    private String sname;
-    private String smail;
+    private Long id;
+    private String name;
+    private String mail;
 
     public Student() {
         super();
