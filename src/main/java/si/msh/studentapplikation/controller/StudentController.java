@@ -93,7 +93,7 @@ public class StudentController {
 
     @RequestMapping("/ipLocator")
     public String calculator() throws IOException {
-        String country = "";
+        String stringbuilder = "IP: ";
         String ip = "5.179.80.204";
         try
         {
@@ -101,18 +101,18 @@ public class StudentController {
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     whatismyip.openStream()));
 
-            // ip = in.readLine();
+            ip = in.readLine();
 
             GeoIPServiceLocator locator = new GeoIPServiceLocator();
             GeoIPServiceSoap_PortType service = locator.getGeoIPServiceSoap();
-            country += (service.getIpLocation(ip)).split("1",2)[0];
-            country += "\n" + service.getCountryNameByISO2(ip);
-
+            stringbuilder += ip;
+            String country = (service.getIpLocation(ip)).substring(16,18);
+            stringbuilder += " - Located in " + service.getCountryNameByISO2(country);
         }
         catch (ServiceException | RemoteException ex)
         {
             ex.printStackTrace();
         }
-        return country;
+        return stringbuilder;
     }
 }
