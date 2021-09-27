@@ -27,6 +27,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -153,5 +154,29 @@ public class StudentController {
         }
 
         return studentGradeDto;
+    }
+
+    @GetMapping("/test/all")
+    public List<StudentGradeDTO> retrieveAllStudentsFromGRPC() {
+        List<Student> students = repository.findAll();
+        ManagedChannel channel = ManagedChannelBuilder.forTarget("localhost:8074")
+                .usePlaintext()
+                .build();
+        List<StudentGradeDTO> studentgrades = new ArrayList<StudentGradeDTO>();
+        StudentGRpcClient resultClient = new StudentGRpcClient(channel);
+        for (Student current: students) {
+            StudentGradeDTO studentGradeDto;
+                studentGradeDto = new StudentGradeDTO
+                        (
+                                current.getId(),
+                                current.getName(),
+                                current.getMail(),
+                                resultClient.getResults(current.getId()).get(0),
+                                resultClient.getResults(current.getId()).get(1)
+                        );
+            assert false;
+            studentgrades.add(studentGradeDto);
+            }
+        return studentgrades;
     }
 }
