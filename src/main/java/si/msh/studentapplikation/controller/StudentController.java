@@ -1,5 +1,8 @@
 package si.msh.studentapplikation.controller;
 
+import gRPC.gRpcClient.StudentGRpcClient;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -10,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import si.msh.studentapplikation.exception.StudentNotFoundException;
 import si.msh.studentapplikation.model.Student;
+import si.msh.studentapplikation.model.StudentGradeDTO;
 import si.msh.studentapplikation.repository.StudentRepository;
 import si.msh.studentapplikation.wsdl.GeoIPServiceLocator;
 import si.msh.studentapplikation.wsdl.GeoIPServiceSoap_PortType;
@@ -55,6 +59,7 @@ public class StudentController {
         Link selfLink = linkTo(methodOn(this.getClass()).retrieveStudent(id)).withSelfRel(); //add also link to self
         resource.add(selfLink);
         return resource;
+
     }
 
     @DeleteMapping("/{id}")
@@ -114,5 +119,39 @@ public class StudentController {
             ex.printStackTrace();
         }
         return stringbuilder;
+    }
+
+    @GetMapping("/test/{id}")
+    public StudentGradeDTO retrieveStudentFromGRPC(@PathVariable long id)
+    {
+        Optional<Student> student = repository.findById(id); // Get Data from H2
+        ManagedChannel channel = ManagedChannelBuilder.forTarget("localhost:8074")
+                .usePlaintext()
+                .build();
+
+        System.out.println("Channel should have resultResponse"+ channel);
+        StudentGRpcClient resultClient = new StudentGRpcClient(channel);
+
+        System.out.println("\nShowing Data From Repository: \n");
+        System.out.println(repository.findById(id));
+        System.out.println("\nShowing Data From GRPC: \n");
+        System.out.println(resultClient.getResults(id));
+
+        StudentGradeDTO studentGradeDto;
+
+        if (student.isPresent()) {
+            studentGradeDto = new StudentGradeDTO
+                    (
+                            id,
+                            student.get().getName(),
+                            student.get().getMail(),
+                            resultClient.getResults(id).get(0),
+                            resultClient.getResults(id).get(1)
+                    );
+        } else {
+            return null;
+        }
+
+        return studentGradeDto;
     }
 }
