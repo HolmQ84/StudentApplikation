@@ -31,6 +31,4 @@ public class StudentGRpcClient {
         results.add(studentGRpcResponse.getStudentMail());
         return results;
     }
-
-
 }

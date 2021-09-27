@@ -15,12 +15,12 @@ public class StudentGRpcServer {
 
     public static void main(String[] args) {
         //Starter server på angivet port
-        Server server = ServerBuilder.forPort(8074) // Starts server on port 8081
+        Server server = ServerBuilder.forPort(8074) // Starts server on port 8074
                 .addService(new StudentGRpcServiceImpl())
                 .build();
         try {
             server.start();
-            logger.log(Level.INFO, "RESULT SERVER STARTED ON PORT 8081");
+            logger.log(Level.INFO, "RESULT SERVER STARTED ON PORT 8074");
             server.awaitTermination();
         } catch (IOException e) {
             logger.log(Level.SEVERE, "RESULT SERVER DID NOT START");

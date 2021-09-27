@@ -16,7 +16,7 @@ import javax.persistence.Id;
 @Entity
 public class StudentGRpc {
     @Id
-    private int studentId;
-    private String studentName;
-    private String studentMail;
+    private int id;
+    private String phone;
+    private String address;
 }
