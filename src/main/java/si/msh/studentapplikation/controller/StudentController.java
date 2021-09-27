@@ -96,7 +96,7 @@ public class StudentController {
         return exercise;
     }
 
-    @RequestMapping("/ipLocator")
+    @RequestMapping("/iplocator")
     public String calculator() throws IOException {
         String stringbuilder = "IP: ";
         String ip = null;

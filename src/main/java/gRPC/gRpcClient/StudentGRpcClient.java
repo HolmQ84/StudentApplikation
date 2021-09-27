@@ -27,8 +27,8 @@ public class StudentGRpcClient {
         // Send it to the caller, in an appropriate manner in this case as a list.
         List<String> results = new ArrayList<>();
 
-        results.add(studentGRpcResponse.getStudentName());
-        results.add(studentGRpcResponse.getStudentMail());
+        results.add(studentGRpcResponse.getPhone());
+        results.add(studentGRpcResponse.getAddress());
         return results;
     }
 }

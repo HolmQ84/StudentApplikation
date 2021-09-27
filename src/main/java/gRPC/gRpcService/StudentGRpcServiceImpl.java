@@ -28,9 +28,9 @@ public class StudentGRpcServiceImpl extends StudentGRpcServiceGrpc.StudentGRpcSe
 
 
             StudentGRpcResponse studentGRpcResponse = StudentGRpcResponse.newBuilder()
-                    .setStudentId(studentId)
-                    .setStudentName(studentGRpc.getPhone()) //Using Getters from target folder
-                    .setStudentMail(studentGRpc.getAddress()) //Using Getters from target folder
+                    .setId(studentId)
+                    .setPhone(studentGRpc.getPhone()) //Using Getters from target folder
+                    .setAddress(studentGRpc.getAddress()) //Using Getters from target folder
                     .build();
 
             //System.out.println("Student repsone object: \n"+ studentGRpcResponse);
