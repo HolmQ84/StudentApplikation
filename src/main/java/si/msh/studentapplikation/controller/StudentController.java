@@ -68,7 +68,7 @@ public class StudentController {
     {
         Student savedStudent = repository.save(student);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(savedStudent.getStudentId()).toUri();
+                .buildAndExpand(savedStudent.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -78,7 +78,7 @@ public class StudentController {
         Optional<Student> studentOptional = repository.findById(id);
         if (studentOptional.isEmpty())
             return ResponseEntity.notFound().build();
-        student.setStudentId(id);
+        student.setId(id);
         repository.save(student);
         return ResponseEntity.noContent().build();
     }
@@ -94,7 +94,7 @@ public class StudentController {
     @RequestMapping("/ipLocator")
     public String calculator() throws IOException {
         String stringbuilder = "IP: ";
-        String ip = "5.179.80.204";
+        String ip = null;
         try
         {
             URL whatismyip = new URL("http://checkip.amazonaws.com");
